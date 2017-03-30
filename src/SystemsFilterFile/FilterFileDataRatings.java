@@ -178,7 +178,8 @@ public class FilterFileDataRatings {
 	
 	public static void main(String args[]) throws IOException {
 		FilterFileDataRatings filter = new FilterFileDataRatings();
-		filter.readAndWrite("data\\ml-100k\\u2.test", "data\\XuLyFile\\u2_test.txt");
+		filter.readAndWrite("data\\ml-100k\\u5.base", "data\\XuLyFile\\u5.txt");
+		filter.readAndWrite("data\\ml-100k\\u5.test", "data\\XuLyFile\\u5_test.txt");
 	}
 
 
