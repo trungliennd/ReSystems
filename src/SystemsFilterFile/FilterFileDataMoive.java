@@ -14,6 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.Map.Entry;
 
@@ -31,6 +32,7 @@ public class FilterFileDataMoive {
 	private Map<String, Integer> listFeature;
 	private Map<Integer, ArrayList<Integer>> listFilmOfFeature;
 	private ArrayList<String> listMovie;
+	private Map<Integer,Integer> convertIdMovie;
 	private ArrayList<Integer> listMoiveId;
 	
 	
@@ -39,6 +41,7 @@ public class FilterFileDataMoive {
 		listMovie = new ArrayList<String>();
 		listFeature = new HashMap<String, Integer>();
 		listFilmOfFeature = new HashMap<Integer, ArrayList<Integer>>();
+		convertIdMovie = new HashMap<Integer,Integer>();
 	}
 	
 	public String[] checkStrings(String[] strings){
@@ -61,6 +64,8 @@ public class FilterFileDataMoive {
 		}
 		return null;
 	}
+	
+	
 	
 	public void readFileMovieDat(String filename) throws IOException {
 		bufferedReader = new BufferedReader(new FileReader(new File(filename)));
@@ -85,6 +90,39 @@ public class FilterFileDataMoive {
 		}
 //		System.out.println(listFeature.size());
 		bufferedReader.close();
+	}
+	
+	
+	public void readConvertId(String filename) throws IOException {
+		bufferedReader = new BufferedReader(new FileReader(new File(filename)));
+		String line = bufferedReader.readLine();
+		int count = 1;
+		while(line != null) {
+			//System.out.println("string line is: " + line);
+			String line_one[] = line.split("::");
+			listMovie.add(line_one[1]);
+			listMoiveId.add(Integer.parseInt(line_one[0]));
+			convertIdMovie.put(Integer.parseInt(line_one[0]),count);
+			line = bufferedReader.readLine();
+			count++;
+		}
+		bufferedReader.close();
+	}
+	
+	public void writeConvertId(String filename) throws IOException {
+		bufferedWriter = new BufferedWriter(new FileWriter(new File(filename)));
+		int size = listMovie.size();
+		for(int i = 0;i < size;i++) {
+			StringBuilder strings = new StringBuilder();
+			//System.out.println(convertIdMovie.get(listMoiveId.get(i)));
+			strings.append(convertIdMovie.get(listMoiveId.get(i)));
+			strings.append("\t");
+			strings.append(listMovie.get(i));
+			strings.append("\n");
+			bufferedWriter.write(strings.toString());
+		}
+		System.out.println("Write done");
+		bufferedWriter.close();
 	}
 	
 	
@@ -124,7 +162,7 @@ public class FilterFileDataMoive {
 	}
 
 	public void writeMovie(String filename) throws IOException {
-		bufferedWriter = new BufferedWriter(new FileWriter(new File(PATH + "\\XuLyFile\\" + filename)));
+		bufferedWriter = new BufferedWriter(new FileWriter(new File(filename)));
 		StringBuilder strings = new StringBuilder();
 		sortIdMovie();
 		Set<Entry<Integer, ArrayList<Integer>>> set = listFilmOfFeature.entrySet();
@@ -148,7 +186,7 @@ public class FilterFileDataMoive {
 	}
 	
 	public void writeFeatureOfMovie(String filename) throws IOException {
-		bufferedWriter = new BufferedWriter(new FileWriter(new File(PATH + "\\XuLyFile\\" + filename)));
+		bufferedWriter = new BufferedWriter(new FileWriter(new File(filename)));
 		StringBuilder strings = new StringBuilder();
 		sortFeatureMap();
 		Set<Entry<String, Integer>> set = listFeature.entrySet();
@@ -185,10 +223,15 @@ public class FilterFileDataMoive {
 	
 	public static void main(String[] args) throws IOException {
 		FilterFileDataMoive filter = new FilterFileDataMoive();
-		filter.readFileMovieDat("data\\ml-1m\\movies.dat");
-		filter.writeMoiveAndId("data\\XuLyFile\\id_movie.txt");
+		/*filter.readFileMovieDat("data\\ml-10M100K\\movies.dat");
+		filter.writeFeatureOfMovie("data\\ml-10M100K\\feature.dat");
+		filter.writeMoiveAndId("data\\ml-10M100K\\movies_id.dat");
+		filter.writeMovie("data\\ml-10M100K\\moviess.dat");*/
+//		filter.readConvertId("data\\ml-1m\\movies.dat");
+//		filter.writeConvertId("data\\ml-1m\\movies_new.dat");
 	}
 
+	
 	public BufferedReader getBufferedReader() {
 		return bufferedReader;
 	}
@@ -236,6 +279,14 @@ public class FilterFileDataMoive {
 
 	public void setListMoiveId(ArrayList<Integer> listMoiveId) {
 		this.listMoiveId = listMoiveId;
+	}
+
+	public Map<Integer, Integer> getConvertIdMovie() {
+		return convertIdMovie;
+	}
+
+	public void setConvertIdMovie(Map<Integer, Integer> convertIdMovie) {
+		this.convertIdMovie = convertIdMovie;
 	}
 	
 }

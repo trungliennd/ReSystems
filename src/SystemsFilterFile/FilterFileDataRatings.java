@@ -14,6 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.Map.Entry;
 
@@ -46,7 +47,7 @@ public class FilterFileDataRatings {
 	//private double matrix_user_movie[];
 	private BufferedReader bufferedReader;
 	private BufferedWriter bufferedWriter;
-	
+	private List<String> listData = new ArrayList<String>();
 	
 	public FilterFileDataRatings() {
 		// TODO Auto-generated constructor stub
@@ -88,8 +89,43 @@ public class FilterFileDataRatings {
 		bufferedReader.close();
 	}
 	
+	public void sufferData(int times) {
+		int size = listData.size();
+		Random rd = new Random();
+		for(int i = 0;i < times;i++) {
+			int a = rd.nextInt(size);
+			int b = rd.nextInt(size);
+			if(a != b) {
+				String x = listData.get(a);
+				listData.set(a, listData.get(b));
+				listData.set(b, x);
+			}
+		}
+	}
+	
+	public void readAndWriteSufferData(String filename) throws IOException {
+		bufferedReader = new BufferedReader(new FileReader(new File(filename)));
+		String line = bufferedReader.readLine();
+		while(line != null) {
+			listData.add(line);
+			line = bufferedReader.readLine();
+		}
+		bufferedReader.close();
+		sufferData(1000000);
+		bufferedWriter = new BufferedWriter(new FileWriter(new File(filename)));
+		int size = listData.size();
+		for(int i = 0;i < size;i++) {
+			StringBuilder strings = new StringBuilder();
+			strings.append(listData.get(i));
+			strings.append("\n");
+			bufferedWriter.write(strings.toString());
+		}
+		bufferedWriter.close();
+	}
+	
+	
 	public void readFileRating(String filename) throws IOException {
-		bufferedReader = new BufferedReader(new FileReader(new File(PATH + "\\ml-1m\\" + filename)));
+		bufferedReader = new BufferedReader(new FileReader(new File(PATH + "\\ml-10M100K\\" + filename)));
 		//bufferedReader.readLine();
 		//int count = 0;
 		String line = bufferedReader.readLine();
@@ -109,6 +145,31 @@ public class FilterFileDataRatings {
 		}
 		bufferedReader.close();
 		System.out.println("READ FILE DONE!");
+	}
+	
+	public void readAndWriteConvert(String fileIn,String fileOut) throws IOException {
+		bufferedReader = new BufferedReader(new FileReader(new File(fileIn)));
+		bufferedWriter = new BufferedWriter(new FileWriter(new File(fileOut)));
+		FilterFileDataMoive movie = new FilterFileDataMoive();
+		movie.readConvertId("data\\ml-1m\\movies.dat");
+		Map<Integer, Integer> convert = movie.getConvertIdMovie();
+		String line = bufferedReader.readLine();
+		while(line != null) {
+			StringBuilder strings = new StringBuilder();
+			String line_one[] = line.split("::");
+			Integer id_moive = convert.get(Integer.parseInt(line_one[1]));
+			strings.append(line_one[0]);
+			strings.append("\t");
+			strings.append(id_moive.toString());
+			strings.append("\t");
+			strings.append(line_one[2]);
+			strings.append("\n");
+			bufferedWriter.write(strings.toString());
+			line = bufferedReader.readLine();
+		}
+		
+		bufferedReader.close();
+		bufferedWriter.close();
 	}
 
 
@@ -160,7 +221,7 @@ public class FilterFileDataRatings {
 		bufferedReader = new BufferedReader(new FileReader(new File(filename1)));
 		String line = bufferedReader.readLine();
 		while(line != null) {
-			String line_index[] = line.split("\t");
+			String line_index[] = line.split("::");
 			StringBuffer strings = new StringBuffer();
 			strings.append(line_index[0]);
 			strings.append("\t");
@@ -178,8 +239,10 @@ public class FilterFileDataRatings {
 	
 	public static void main(String args[]) throws IOException {
 		FilterFileDataRatings filter = new FilterFileDataRatings();
-		filter.readAndWrite("data\\ml-100k\\u5.base", "data\\XuLyFile\\u5.txt");
-		filter.readAndWrite("data\\ml-100k\\u5.test", "data\\XuLyFile\\u5_test.txt");
+		filter.readAndWriteSufferData("data\\ml-1m\\ratings_new.dat");
+		/*filter.readAndWriteConvert("data\\ml-1m\\ratings.dat", "data\\ml-1m\\ratings_new.dat");
+*/	/*	filter.readAndWrite("data\\ml-10M100K\\r5.train", "data\\XuLyFile\\r5.txt");
+		filter.readAndWrite("data\\ml-10M100K\\r5.test", "data\\XuLyFile\\r5_test.txt");*/
 	}
 
 
