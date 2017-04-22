@@ -66,8 +66,31 @@ Họ và Tên & MSSV &    Mã học phần \\[0.5cm]
 \tableofcontents
 \chapter*{Lời mở đầu}
 \addcontentsline{toc}{chapter}{Lời mở đầu}
+Sự phát triển của công nghệ thông tin và việc ứng dụng công nghệ thông tin trong nhiều
+lĩnh vực của đời sống, kinh tế xã hội trong nhiều năm qua cũng đồng nghĩa với lượng dữ
+liệu đã được các cơ quan thu thập và lưu trữ ngày một tích luỹ nhiều lên. Họ lưu trữ các
+dữ liệu này vì cho rằng trong nó ẩn chứa những giá trị nhất định nào đó. Mặt khác, trong
+môi trường cạnh tranh, người ta ngày càng cần có nhiều thông tin với tốc độ nhanh để trợ
+giúp việc ra quyết định và ngày càng có nhiều câu hỏi mang tính chất định tính cần phải
+trả lời dựa trên một khối lượng dữ liệu khổng lồ đã có. Với những lý do như vậy, các
+phương pháp quản trị và khai thác cơ sở dữ liệu truyền thống ngày càng không đáp ứng
+được thực tế đã làm phát triển một khuynh hướng kỹ thuật mới đó là Kỹ thuật phát hiện
+tri thức và khai phá dữ liệu. \\ \\ 
+Khai phá dữ liệu đã và đang được nghiên cứu, ứng dụng trong nhiều lĩnh vực khác nhau
+ở các nước trên thế giới, tại Việt Nam kỹ thuật này tương đối còn mới mẻ tuy nhiên cũng
+đang được nghiên cứu và dần đưa vào ứng dụng. Khai phá dữ liệu là một bước trong qui
+trình phát hiện tri thức gồm có các thuật toán khai thác dữ liệu chuyên dùng dưới một số
+qui định về hiệu quả tính toán chấp nhận được để tìm ra các mẫu hoặc các mô hình trong
+dữ liệu. Nói một cách khác, mục đích của phát hiện tri thức và khai phá dữ liệu chính là
+tìm ra các mẫu và/hoặc các mô hình đang tồn tại trong các cơ sở dữ liệu nhưng vẫn còn bị
+che khuất bởi hàng núi dữ liệu. \\ \\ 
+Trong bài viết này, em sẽ trình bày một cách tổng quan về Kỹ thuật khai phá dữ liệu.
+Trên cơ sở đó đưa ra một bài toán Gợi ý phim cho người dùng của một hệ thống và giải
+quyết bài toán bằng phương pháp Collaborative Filtering. 
+
 \chapter*{Lời cảm ơn}
 \addcontentsline{toc}{chapter}{Lời cảm ơn}
+Chúng em xin chân thành cảm ơn thầy Nguyễn Kiêm Hiếu đã cung cấp cho chúng em những kiến thức vô cứng bổ ích khi chúng em bắt đầu tìm hiểu về môn học khai phá dữ liệu web cũng như đã giúp đỡ chúng em rất nhiều trong quá trình thực nghiệm và viết bản báo cáo này.
 \chapter{Mô tả bài toán}
 \section{Giới thiệu}
 Hằng ngày chúng ta có các ý kiến về những thứ chúng ta thích hoặc không thích và thậm chí là không quan tâm đến nó. Ví dụ như bạn xem một chương trình truyền hình trên TV, bạn cảm thấy chương trình rất hay và hài hước hoặc thấy nó nhàm chán hay bạn không tìm thấy chương trình đó ở tất cả mọi kênh.Hoặc chương trình đó diễn ra mà chúng ta không để ý.\\ \\
@@ -347,7 +370,7 @@ $r_{xi} = \underbrace{\mu}_{overall mean rating} + \underbrace{b_{x}}_{bias for 
 Giải pháp:
 \begin{flushleft}
 \begin{displaymath}
-\displaystyle \min_{Q,P} \sum_{(x,i)\in R}(r_{xi} - (\mu + b_x + b_i + q_i.q_x))^2
+\displaystyle \min_{Q,P} \sum_{(x,i)\in R}(r_{xi} - (\mu + b_x + b_i + q_i.p_x))^2
 \end{displaymath}
 \end{flushleft}
 \begin{center}
@@ -366,6 +389,28 @@ Trong đó:
 \item[-] $\mu$ là raitng trung bình của ma trận người dùng.
 \item[-] $q_i,p_x$ là các vector hàng và cột của ma trận Q,P.
 \end{itemize}
+\newpage
+\subsection{Sử dụng Stochastic Gradient Descent}
+Xét người dùng x và bộ phim i. Giả sử đạo hàm riêng phần theo $q_{if}$ Ta có:
+\begin{displaymath}
+\triangledown Q = [\triangledown q_{if}] \  and  \ 
+\triangledown q_{if} = \sum_{x,i} - 2(r_{xi} - q_ip_x)p_xf + 2\lambda q_{if}
+\end{displaymath}
+\begin{itemize}
+\item Ở đây $q_if$ nhân tố f của hàng $q_i$ của matrix Q
+\end{itemize}
+Cập nhật trọng số cho Q theo Stochastic Gradient Descent
+\begin{displaymath}
+Q = Q - \mu \triangledown Q(r_{xi})
+\end{displaymath}
+Cập nhật tổng quát:
+\begin{itemize}
+\item[] $\varepsilon_{xi} = 2*(r_{xi} - \mu B_x - B_i - P_x^TQ_i)$
+\item[] $P_x = P_x + \alpha *(\varepsilon_{xi}Q_i - \lambda P_x)$
+\item[] $Q_i = Q_i + \alpha *(\varepsilon_{xi}P_x - \lambda Q_i)$
+\item[] $B_x = B_x + \alpha *(\varepsilon - \lambda B_x)$
+\item[] $B_i = B_i + \alpha *(\varepsilon_{xi} - \lambda B_i)$
+\end{itemize}
 \section{Ưu và nhược điểm của phương pháp}
 \subsection{Ưu điểm:}
 \begin{itemize}
@@ -379,7 +424,7 @@ Trong đó:
 \item[•] Đó là một mô hình tuyến tính, do đó, không phải là giải pháp tốt nhất để xử lý các phụ thuộc phi tuyến tính.
 \end{itemize}
 \chapter{Kết quả thực nghiệm}
-\section{Xử lí dư liệu}
+\section{Xử lí dữ liệu}
 Dư liệu được lấy từ  trang moivelen với các rating thực của người dùng thực trong hệ thống phim của moivelen. Bộ dữ liệu được chia làm 5 folds phụ vụ cho việc đánh giá Cross-Validation. \\
 Running split\_ratings.sh will use ratings.dat as input, and produce the fourteen output files described below. Multiple runs of the script will produce identical results. \\
 \begin{center}
