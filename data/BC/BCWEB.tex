@@ -57,11 +57,12 @@ VIỆN CÔNG NGHỆ THÔNG TIN VÀ TRUYỀN THÔNG}\\
 \hspace{1cm}\fontsize{14}{16}\fontfamily{cmr}\selectfont \textbf{Sinh viên thực hiện:}
 \begin{longtable}{l c c }
 Họ và Tên & MSSV &    Mã học phần \\[0.5cm]
-Đặng Quang Trung &    20134145 & IT4991\\
+Đặng Quang Trung &    20134145 & IT4868\\
+Trần Bá Thiết & 20133736 &IT4868
 \end{longtable}
 \hspace{0.3cm}\fontsize{14}{16}\fontfamily{cmr}\selectfont \textbf{Giáo viên hướng dẫn:} TS. Nguyễn Kiêm Hiếu\\[1.0cm]
 \begin{center}
-\fontsize{16}{19}\fontfamily{cmr}\selectfont Hà Nội 11-8-2016
+\fontsize{16}{19}\fontfamily{cmr}\selectfont Hà Nội 10-05-2017
 \end{center} 
 \tableofcontents
 \chapter*{Lời mở đầu}
@@ -447,12 +448,16 @@ ra.test, rb.test & chia dữ liệu xếp hạng thành tập huấn luyện và
 				\hline
 \end{longtable}
 \end{center}
+\newpage
 \section{Kết quả Collaborative Filtering}
 \begin{center}
 \begin{longtable}{|l|l|l|}
 \hline
 Bộ dư liệu & k(hàng xóm) & RMSE \\ 
 \hline
+ml-100k & 3 &  0.9928 \\
+ml-100k & 10 &  0.9236\\
+ml-100k & 15 &  0.921\\
 ml-100k & 5 & 0.9537 \\
 ml-1m & 5 & 0.8835 \\
 \hline
@@ -482,7 +487,6 @@ ml-1m & 40 & 45 & 0.8626 \\
 \end{figure}
 \end{center}
 \begin{thebibliography}{5}
-
 \bibitem{latex}\url{http://www.mmds.org/}
 \bibitem{website}Slide chapter 9 Stanford University
 \bibitem{book}Mining of Massive Datasets of Jure Leskovec Stanford Univ. Anand Rajaraman Milliway Labs Jeffrey D. Ullman Stanford Univ.
