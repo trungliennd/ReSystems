@@ -1,0 +1,194 @@
+\documentclass{beamer}
+% Copyright 2015 by Do Phan Thuan
+
+% Loại mẫu slice
+%\usetheme{AnnArbor}
+%\usetheme{Antibes}
+\usetheme{Boadilla}
+%\usetheme{CambridgeUS}
+%\usetheme{Hannover}
+
+% Ký tự tiếng Việt
+\usepackage[utf8]{vietnam}
+% Chèn ảnh
+\usepackage{graphicx}
+% Chèn đường dẫn 
+\usepackage{url}
+
+% Vẽ đồ thị
+
+% Insert code
+\usepackage{listings}
+\lstset{language=C++,
+   %keywords={break,case,catch,continue,else,elseif,end,for,function,
+   %   global,if,otherwise,persistent,return,switch,try,while},
+   basicstyle=\ttfamily,
+   keywordstyle=\color{blue},
+   commentstyle=\color{red},
+   stringstyle=\color{dkgreen},
+   frame=lrtb,
+   %frame=5 pt,
+   numbers=left,
+   numberstyle=\tiny\color{gray},
+   stepnumber=1,
+   numbersep=10pt,
+   backgroundcolor=\color{white},
+   tabsize=4,
+   showspaces=false,
+   showstringspaces=false}
+% Tô mầu cho bảng
+\usepackage{colortbl}
+
+
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+  
+\definecolor{Xanh}{rgb}{0,0.5,1}
+\definecolor{Do}{rgb}{1,0.25,0}
+\definecolor{Vang}{rgb}{1,1,0}
+\definecolor{Datroi}{rgb}{0,0,1}
+% Vẽ hình
+\usepackage{tikz}
+\usetikzlibrary{arrows,shapes}
+% Vẽ mạch điện
+\usepackage[siunitx,european resistors]{circuitikz}
+
+% multirow
+\usepackage{multirow}
+
+\usepackage{pbox}
+
+% Tô mầu cho bảng
+\usepackage{colortbl}
+\definecolor{Xanh}{rgb}{0,0.5,1}
+\definecolor{Do}{rgb}{1,0.25,0}
+\definecolor{Vang}{rgb}{1,1,0}
+\definecolor{Datroi}{rgb}{0,0,1}
+
+% Một vài ký hiệu thường dùng
+\def\R{{\mathbb R}}
+\def\N{{\mathbb N}}
+\def\X{{\mathcal X}}
+\def\Y{{\mathcal Y}}
+\def\F{{\mathcal F}}
+\def\P{{\mathcal P}}
+\def\E{{\mathbb E}}
+\def\I{{\mathbb I}}
+\def\sign{{\rm sign}}
+
+% Xác định khoảng dãn trong bảng
+%\renewcommand\arraystretch{1.6}
+
+% a few macros
+\newcommand{\bi}{\begin{itemize}}
+\newcommand{\ei}{\end{itemize}}
+\newcommand{\ig}{\includegraphics}
+\newcommand{\subt}[1]{{\footnotesize \color{subtitle} {#1}}}
+
+% named colors
+\definecolor{offwhite}{RGB}{249,242,215}
+\definecolor{foreground}{RGB}{255,255,255}
+\definecolor{background}{RGB}{24,24,24}
+\definecolor{title}{RGB}{107,174,214}
+\definecolor{gray}{RGB}{155,155,155}
+\definecolor{subtitle}{RGB}{102,255,204}
+\definecolor{hilight}{RGB}{22,155,104}
+\definecolor{vhilight}{RGB}{255,111,207}
+\definecolor{lolight}{RGB}{155,155,155}
+%\definecolor{green}{RGB}{125,250,125}
+
+% Minted
+%\usepackage{minted}
+%\usemintedstyle{monokai}
+%\newminted{cpp}{fontsize=\footnotesize}
+
+% Graph styles
+\tikzstyle{vertex}=[circle,fill=black!50,minimum size=15pt,inner sep=0pt, font=\small]
+\tikzstyle{selected vertex} = [vertex, fill=red!24]
+\tikzstyle{edge} = [draw,thick,-]
+\tikzstyle{dedge} = [draw,thick,->]
+\tikzstyle{weight} = [font=\scriptsize,pos=0.5]
+\tikzstyle{selected edge} = [draw,line width=2pt,-,red!50]
+\tikzstyle{ignored edge} = [draw,line width=5pt,-,black!20]
+
+%gets rid of bottom navigation bars
+\setbeamertemplate{footline}[frame number]{}
+
+%gets rid of bottom navigation symbols
+%\setbeamertemplate{navigation symbols}{}
+
+%gets rid of footer
+%will override 'frame number' instruction above
+%comment out to revert to previous/default definitions
+%\setbeamertemplate{footline}{}
+
+% Tác giả, Tiêu đề, vân vân
+\title[]{{\huge \bf Thuật toán lập lịch cho hệ thống thời gian thực} \\}
+\author[Đặng Quang Trung]{
+Đặng Quang Trung\\
+}
+
+\institute[]{
+%\inst{1}%
+Hệ Điều Hành
+}
+
+\logo{\includegraphics[scale=0.05]{hust.jpg} \vspace{220pt}}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+\begin{frame}{Nội dung}
+\tableofcontents
+\end{frame}
+\section{Hệ thống thời gian thực}
+\begin{frame}{Hệ thống thời gian thực}
+\begin{itemize}
+\item[•] Trong thế giới vật lý, mục đích của một hệ thống thời gian thực là có một thực hiện vật lý trong một khung thời gian đã chọn.
+\item[•] Thông thường, một hệ thống thời gian thực bao gồm một hệ thống điều khiển( máy tính ) và một hệ thống bị điều khiển ( môi trường ).
+\item[•] Mỗi công việc xảy ra trong một hệ thống thời gian thực có một số thuộc tính thời gian. Các thuộc tính thời gian này cần được xem xét khi lập kế hoạch các nhiệm vụ trên một hệ thống thời gian thực.
+\begin{itemize}
+\item[] Release time (or ready time), Deadline, Minimum delay, Maximum delay, Worst case execution time, Run time, Weight (or priority).
+\end{itemize}
+\end{itemize}
+\end{frame}
+\begin{frame}{Định nghĩa}
+\begin{itemize}
+\item[•] Một hệ thống chứa một tập các tác vụ:
+\begin{displaymath}
+T = \{\tau_1, \tau_2, \ldots, \tau_n\}
+\end{displaymath}
+\item[•] Thời gian thực hiện của mỗi tác vụ là $C_i$ với $\tau_i \in T$
+\item[•]  Hệ thống được cho là thời gia thực nếu có tồn tại ít nhất tác vụ $\tau_i \in T$, tác vụ rơi vào tình trạng:
+\end{itemize}
+\end{frame}
+\begin{frame}{Tình trạng tác vụ}
+\begin{itemize}
+\item[1, ] Tác vụ $\tau_i$ là tác vụ hard real-time. Thời gian thực hiện tác vụ $\tau_i$ phải được hoàn thành bởi thời gian hết hạn $D_i ( C_i \leq D_i )$.
+\item[2, ] Tác vụ $\tau_i$ là tác vụ \textbf{soft real-time}. Tác vụ cuối cùng $\tau_i$ kết thúc tính toán của nó sau gian gian hết hạn $D_i$, sẽ bị phạt nặng hơn. Hàm phạt $P(\tau_i)$ được định nghĩa cho tác vụ. Nếu $C_i \leq D_i$ hàm phạt $P(\tau_i)$ bằng 0 trái lại $P(\tau_i) > 0$ giá trị này tăng theo $C_i - D_i$.
+\item[3, ] Tác vụ là \textbf{firm real-time}. Tác vụ kết thúc công việc tính toán của nó sớm hơn thời hạn hết hạn $D_i$, sẽ nhận được thưởng. Hàm thưởng $R(\tau_i)$ được định nghĩa cho tác vụ. Nếu $C_i \geq D_i$, hàm $R(\tau_i)$ bằng 0, trái lại $R(\tau_i) > 0$ giá trị này tăng theo $D_i - C_i$.
+\end{itemize}
+\end{frame}
+\begin{frame}{Hàm thưởng và phạt của hệ thống}
+\begin{itemize}
+\item[•] Một tập các tác vụ thời gian thực $T = \{\tau_1, \tau_2, \ldots , \tau_3\}$ có thể là hỗn hợp của các tác vụ hard, soft, firm thời gian thực.
+\item[•] $T_s$ là tập tất cả các tác vụ \textbf{soft real-time} trong T, ví dụ $T_s = \{\tau_{s,1}, \tau_{s,2}, \ldots , \tau_{s,l}\}$ với $\tau_{s,i} \in T$. Hàm lỗi của hệ thống sẽ là $P(T)$
+\begin{displaymath}
+P(T) = \sum_{i-1}^{l} P(\tau_{s,i})
+\end{displaymath}
+\item[•] $T_f$ là tập tất cả các tác vụ \textbf{firm real-time} trong T, ví dụ $T_f = \{\tau_{f,1}, \tau_{f,2}, \ldots , \tau_{f,k}\}$ với $\tau_{f,i} \in T$. Hàm thưởng của hệ thống sẽ là $R(T)$
+\begin{displaymath}
+R(T) = \sum_{i-1}^{k} R(\tau_{f,i})
+\end{displaymath}
+\end{itemize}
+\end{frame}
+% TODO: Book
+\begin{frame}{Tài liệu tham khảo}
+\section*{Tài liệu tham khảo}
+\end{frame}
+\end{document}
