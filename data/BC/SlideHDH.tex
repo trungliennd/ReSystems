@@ -187,7 +187,167 @@ R(T) = \sum_{i-1}^{k} R(\tau_{f,i})
 \end{displaymath}
 \end{itemize}
 \end{frame}
+\begin{frame}{Giới thiệu}
+\begin{itemize}
+\item[•] Mục địch của lập lịch
+\begin{itemize}
+\item Tối ưu hóa hiệu năng của hệ thống, thông lượng.
+\item Làm thế nào? sắp xếp các tiến trình.
+\item Thuật toán lập lịch Cố gắng để đạt được kết quả tốt nhất có thể (trung bình hoặc cho một bộ quy trình nhất định)
+\end{itemize}
+\item[•] Tiêu chí tối ưu
+\begin{itemize}
+\item Thời gian đáp ứng, thời gian chờ đợi, thời gian đáp ứng của quá trình.
+\item Sử dụng bộ vi xử lý.
+\item Thông lượng (quy trình hoàn thành cho mỗi đơn vị thời gian).
+\item Đáp ứng các thời hạn: tính khả thi, khả năng lập lịch
+\end{itemize}
+\end{itemize}
+\end{frame}
+\section{Phân lớp thuật toán}
+\begin{frame}{Phân lớp thuật toán lập lịch}
+\begin{itemize}
+\item[•]Static
+\bi
+\item Tất cả các thông số về độ ưu tiên được biết trước.
+\item Lập lịch có thể được hoàn thành trong thời gian thiết kế, do đó hiệu quả cao trong thời gian chạy.
+\item Áp dụng cho các hệ thống nhúng đóng.
+\item 
+\ei
+\item[•] Dynamic
+\bi
+\item 
+\item Không phải tất cả các tham số đều được biết trước
+\item Lập lịch trực tuyến.
+\item Mục tiêu tối ưu thường có thể đạt được chỉ khoảng.
+\item Lập lịch yêu cầu hiệu năng tính toán.
+\item Hoạt động hệ điều hành thông thường cho hệ thống tương tác
+\ei 
+\end{itemize}
+\end{frame}
+\begin{frame}{Phân lớp thuật toán lập lịch (2)}
+\begin{itemize}
+\item Lập lịch không trưng dụng.
+\bi
+\item Hệ điều hành không thu hồi bộ xử lý từ tiến trình đang chạy, nó chạy cho đến khi nó kết thúc hoặc trả lại bộ xử lý.
+\item Ưu điểm: đơn giản thực hiện thay đổi quy trình.
+\item Nhươc điểm: không hữu ích cho các hệ thống thời gian thực, nơi mà phản ứng nhanh với các sự kiện bên ngoài là cần thiết
+\ei
+\item Lập lịch trưng dụng
+\bi
+\item Hệ điều hành sẽ thu hồi bộ xử lý của tiến trình đang chạy bất cứ khi nào có nhu cầu lập lịch lại.
+\ei
+\end{itemize}
+\end{frame}
+\begin{frame}{Sở đồ cấu trúc phân lớp tổng quát}
+\begin{figure}[h]
+\begin{center}
+\includegraphics[scale=0.45]{hdh.png}
+\caption{Sơ đồ lập lịch}
+\end{center}
+\end{figure}
+\end{frame}
+\begin{frame}{Lập lịch hệ thống thời gian thực}
+\begin{itemize}
+\item[•] Earliest Deadline First(EDF)
+\item[•] Rate-monnotonic (RM)
+\end{itemize}
+\end{frame}
+\begin{frame}{Earliest Deadline First(EDF)}
+\begin{itemize}
+\item[•] Lập lịch dựa trên thời gian hết hạn
+\bi
+\item Chỉ sử dụng thời gian hết hạn của tiến trình lên kế hoạch, không dungf thời gian tính toán.
+\item Bộ xử lý được gán cho tác vụ với thời gian hết hạn gần nhất(thời gian hết hạn sớm nhất, EDF).
+\item Không trưng dụng: Lập lịch lại khi tác vụ hiện tại thực hiện xong.
+\item Trưng dụng: Lập lịch lại khi có 1 tiến trình mới sẵn sàng.
+\ei
+\end{itemize}
+\end{frame}
+\section{Thuật toán EDF}
+\begin{frame}{Earliest Deadline First}
+\begin{itemize}
+\item Static EDF cùng thời gian sẵn sàng.
+\bi
+\item Sắp xếp các tiến trình với thời gian hết hạn tăng dần.
+\item Bất cứ khi nào một tiến trình được lập lịch, kiểm tra xem thời hạn của nó có được đáp ứng hay bị vi phạm.
+\item Cho k tiến trình nó thỏa mãn.
+\ei
+\end{itemize}
+\begin{displaymath}
+\sum_{i=1}^k C_i \leq D_k  \ \ k = 1 \ldots n
+\end{displaymath}
+\end{frame}
+\begin{frame}{Earliest Deadline First}
+\begin{itemize}
+\item Ví dụ:
+\begin{figure}[h]
+\begin{center}
+\includegraphics[scale=0.6]{sl.png}
+\end{center}
+\end{figure}
+\item EDF là tối ưu thời gian sẵn sàng giống nhau.
+\end{itemize}
+\end{frame}
+\begin{frame}{Earliest Deadline First}
+\bi
+\item Chứng minh
+\bi
+\item Bộ xử lý luôn được sử dụng vì $R_i = 0$.
+\item Nếu lập lịch đã được tiến hành đúng thời điểm trước khi thêm $P_k$, sau đó sẽ không thêm được bất kì gì nữa:
+\begin{displaymath}
+\sum_{i=1}^{k} C_i > D_k
+\end{displaymath}
+\item Khả năng duy nhất là sau đó trao đổi $P_k$ với một trong các tiến trình đã được lập lịch $P_j$ (j < k).
+\item Tổng thời gian thực hiện vẫn không thay đổi.
+\item  Chúng ta biết rằng $D_j \leq D_k$ và do đó:
+\begin{displaymath}
+\sum_{i=1}^{k} C_i > D_j
+\end{displaymath}
+\item Do đó sự trao đổi làm cho mọi thứ tồi tệ hơn.
+\item Nếu thuật toán không tìm được giải pháp nào khác.
+\ei
+\ei
+\end{frame}
+\begin{frame}{Earliest Deadline First}
+\begin{itemize}
+\item Static EDF với thời gian sẵn sàng khác nhau
+\bi
+\item Không trưng dụng là không tối ưu
+\begin{figure}[h]
+\begin{center}
+\includegraphics[scale=0.6]{sl1.png}
+\end{center}
+\end{figure}
+\ei
+\end{itemize}
+\end{frame}
+\begin{frame}{Earliest Deadline First}
+\begin{itemize}
+\item Có lập lich tối ưu khác ví du:
+\begin{figure}[h]
+\begin{center}
+\includegraphics[scale=0.6]{sl2.png}
+\end{center}
+\end{figure}
+\item Thuật toán EDF sẽ tối ưu cho trường hợp này nếu có trưng dụng
+\item Ví dụ:
+\begin{figure}[h]
+\begin{center}
+\includegraphics[scale=0.6]{sl3.png}
+\end{center}
+\end{figure}
+\end{itemize}
+\end{frame}
+\section{RM}
 % TODO: Book
+\begin{frame}
+\begin{figure}[h]
+\begin{center}
+\includegraphics[scale=0.5]{thanks.jpg}
+\end{center}
+\end{figure}
+\end{frame}
 \begin{frame}{Tài liệu tham khảo}
 \section*{Tài liệu tham khảo}
 \end{frame}

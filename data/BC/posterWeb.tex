@@ -50,6 +50,7 @@
 \definecolor{mycolor}{rgb}{0.122, 0.435, 0.698}
 \newmdenv[innerlinewidth=0.5pt, roundcorner=10pt,linecolor=mycolor,innerleftmargin=15pt,
 innerrightmargin=15pt,innertopmargin=6pt,innerbottommargin=30pt]{mybox}
+
 \begin{document}
 %----------------------------------------------------------------------------------------
 %	POSTER HEADER 
@@ -115,7 +116,7 @@ hai phương pháp:
 \end{mybox}
 \begin{mybox}
 \section*{Collaborative Filtering}
-\subsubsection*{Ý tưởng:}
+\subsubsection*{Ý tưởng basic:}
 \begin{minipage}[c]{0.45\linewidth}
 \includegraphics[width=0.8\linewidth]{CF.png}
 \end{minipage}
@@ -130,10 +131,6 @@ người trong tập N.
 \end{minipage}
 \subsubsection*{Tìm tập người tương đồng:}
 \begin{itemize}
-\item[•] Độ đo tương đồng jaccard
-\begin{itemize}
-\item[-] Vấn đề: khi sử dụng độ đo jaccard nó sẽ không quan tâm các giá trị ratings của người dùng
-\end{itemize}
 \item[•] Độ đo tương đồng Cosine
 \begin{itemize}
 \item[-] $sim(x,y) = \cos(\vec{r}_x , \vec{r}_y) = \frac{\vec{r}_x.\vec{r}_y}{\parallel \vec{r}_x \parallel . \parallel \vec{r}_y \parallel}$
@@ -262,7 +259,6 @@ Trong đó:
 \begin{mybox}
 \section*{Kết quả thực nghiệm}
 \begin{multicols}{3}
-\begin{mybox}
 \subsection*{Collaborative:}
 \begin{center}
 \begin{tabular}{|c|c|c|}
@@ -277,8 +273,6 @@ ml-1m & 5 & 0.8835 \\
 \hline
 \end{tabular}
 \end{center}
-\end{mybox}
-\begin{mybox}
 \subsection*{Latent factor model:}
 \begin{center}
 \begin{tabular}{|l|l|l|l|}
@@ -300,10 +294,20 @@ ml-1m & 40 & 45 & 0.8626 \\
 \end{minipage}
 \begin{minipage}[c]{0.5\linewidth}
 \end{minipage}
-\end{mybox}
-\begin{mybox}
 \subsection*{Kết luận:}
-\end{mybox}
+\begin{itemize}
+\item[•] Cả hai phương pháp dễ tiếp cận và cài đặt trong thực tiễn.
+\item[•] Qua thực nghiệm thấy rằng Latent cho kết quả tốt hơn Collaborative Filltering basic
+\end{itemize}
 \end{multicols}
 \end{mybox}
+\begin{center}
+\begin{minipage}[c]{0.6\linewidth}
+\begin{mdframed}[backgroundcolor=gray!20]
+\begin{center}
+   Nội dung của poster này về hê gợi ý môn học khai phá web, mã học phần IT4868
+\end{center}
+\end{mdframed}
+\end{minipage}
+\end{center}
 \end{document}

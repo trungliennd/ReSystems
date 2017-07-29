@@ -1,4 +1,4 @@
-\documentclass[a4paper,11pt]{report}
+\documentclass[a4paper,10pt]{report}
 \usepackage[utf8]{vietnam}
 \usepackage[dvipsnames,svgnames,table]{xcolor}
 \usepackage{graphicx}
@@ -98,7 +98,7 @@ Hằng ngày chúng ta có các ý kiến về những thứ chúng ta thích ho
 Các sở thích của mỗi người là khác nhau, nhưng chúng ta tạo ra các dạng mẫu người dùng. Mọi người có xu hướng thích những thứ tương tự như những thứ mà họ thích. Bởi vì nếu tôi thích bộ phim Matrix, bạn có thế đoán là tôi cũng muốn xem báo cáo về  Minority, những cái này chủ yếu cùng một thể loại hành động và khoa học viễn tưởng. Tương tự như vậy moi người cũng có khuynh hướng thích những thứ mà người tương tự thích. Gợi ý là đề xuất tất cả về dự đoán những điều thích và không thích này và sử dụng chúng để khám phá những điều mới và đáng mong bạn chưa biết về chúng.
 \section{Gơi ý là gì?}
 Trong báo cáo này sẽ nói về một số cách mọi người đưa ra các khuyến nghị và khám phá các điều mới. Có một vài chiến lược sử dụng để tạo ra các khuyến nghị: Một là có thể đựa vào những người có cùng thị hiếu sở thích. Hoặc phương pháp khác sẽ tìm ra những thứ giống như những gì chúng ta đã thích.\\ \\
-Ở đây bài báo cáo sẽ trình bày 2 phương pháp dùng để khuyến nghị đó là học cộng tác( Collaborative Filtering ) và nhân tố ẩn ( Lantent factors ).
+Ở đây bài báo cáo sẽ trình bày 2 phương pháp dùng để khuyến nghị đó là học cộng tác( Collaborative Filtering ) và nhân tố ẩn ( Latent factors ).
 \newpage
 \section{Mô tả bộ dữ liệu}
 Trong bài báo cáo này cài đặt thử nghiệm với 2 bộ dữ liệu:
@@ -116,7 +116,7 @@ Trong bài báo cáo này cài đặt thử nghiệm với 2 bộ dữ liệu:
 \item[-] Dữ liệu rating chứa trong 3 files là moives.dat , ratings.dat và tags.dat
 \end{itemize}
 \end{itemize}
-Bộ dư trện có thể ở: \href{https://grouplens.org/datasets/movielens/}{moivelens}. Bộ dữ liệu trên đã được trường đại học Minnesota và bất kì nhà nghiên cứu nào có thể đảm bảo tính đúng đắn của dữ liệu, tính phù hợp của nó cho bất kỳ mục đích cụ thể nào, hoặc tính hợp lệ của các kết quả dựa trên việc sử dụng bộ dữ liệu.của nó cho bất kỳ mục đích cụ thể nào, hoặc tính hợp lệ của các kết quả dựa trên việc sử dụng bộ dữ liệu.\\ \\
+Bộ dư trện có thể ở: \href{https://grouplens.org/datasets/movielens/}{moivelens}. Bộ dữ liệu trên đã được trường đại học Minnesota và bất kì nhà nghiên cứu nào có thể đảm bảo tính đúng đắn của dữ liệu, tính phù hợp của nó cho bất kỳ mục đích cụ thể nào, hoặc tính hợp lệ của các kết quả dựa trên việc sử dụng bộ dữ liệu của nó cho bất kỳ mục đích cụ thể nào, hoặc tính hợp lệ của các kết quả dựa trên việc sử dụng bộ dữ liệu.\\ \\
 Cấu trúc nội dung và cách sử dụng các files trong bộ dữ liệu.
 \subsection{User Ids}
 Người sử dụng của Movielens đã được lựa chọn ngẫu nhiên để đưa vào. Id của họ đã được ẩn danh. 
@@ -134,10 +134,11 @@ Thông tin phim có trong tệp moives.dat. Mỗi dòng của tệp này đại 
 \end{itemize}
 MovieID là id MovieLens thực. Tiêu đề phim, theo chính sách, phải được nhập giống với những bài tìm thấy trong IMDB, kể cả năm phát hành. Tuy nhiên, chúng được nhập bằng tay, do đó, lỗi và không nhất quán có thể tồn tại. Các thể loại là một danh sách được cách ly bằng đường ống, và được chọn từ các loại sau: \textbf{Action, Adventure, Animation, Children's, Comedy, Crime, Documentary, Drama, Fantasy, Film-Noir, Horror, Musical, Mystery, Romance, Sci-Fi, Thriller, War, Western}
 \chapter{Collaborative Filtering}
-\section{Ý tưởng của phương pháp}
+\section{Collaborative Filtering basic}
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width =0.6 \textwidth]{CF.png}
+\caption{Hình ảnh minh họa lọc cộng tác}
 \end{center}
 \end{figure}
 \begin{itemize}
@@ -415,13 +416,13 @@ Cập nhật tổng quát:
 \section{Ưu và nhược điểm của phương pháp}
 \subsection{Ưu điểm:}
 \begin{itemize}
-\item[•] Dễ triển khai, hiểu và sử dụng. Có rất nhiều hiện thực và khả năng mở rộng có sẵn.
+\item[•] Dễ triển khai, hiểu và sử dụng. Có rất nhiều triển khai thiết thực và có thể mở rộng
 \item[•] Thời gian chạy: Vì nó chỉ liên quan đến phân rã ma trận tài liệu, nó nhanh hơn so với các mô hình giảm kích thước khác.
 \item[•] Áp dụng nó trên dữ liệu mới là dễ dàng hơn và nhanh hơn so với các phương pháp khác.
 \end{itemize}
 \subsection{Nhược điểm:}
 \begin{itemize}
-\item[•] Bởi vì nó là một mô hình phân phối, do đó, không phải là một đại diện hiệu quả, khi so sánh với các phương pháp hiện đại (như mạng nơ-ron sâu).
+\item[•] Bởi vì nó là một mô hình phân phối, do đó, không phải là một đại diện hiệu quả, khi so sánh với các phương pháp hiện đại.
 \item[•] Đó là một mô hình tuyến tính, do đó, không phải là giải pháp tốt nhất để xử lý các phụ thuộc phi tuyến tính.
 \end{itemize}
 \chapter{Kết quả thực nghiệm}
